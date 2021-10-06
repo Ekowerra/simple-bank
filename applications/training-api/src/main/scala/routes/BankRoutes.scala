@@ -8,7 +8,7 @@ import routes.input.CreateAccountInput
 import cats.effect.{Concurrent, ContextShift, IO, Timer}
 import cats.syntax.semigroupk._
 import org.http4s.HttpRoutes
-import sttp.model.StatusCode.Created
+import sttp.model.StatusCode.{BadRequest, Created}
 import sttp.tapir.Tapir
 import sttp.tapir.docs.openapi.OpenAPIDocsInterpreter
 import sttp.tapir.generic.auto.schemaForCaseClass
@@ -29,8 +29,9 @@ final class BankRoutes(accountAPI: AccountAPI)(implicit
     .post
     .in(jsonBody[CreateAccountInput])
     .out(statusCode(Created) and jsonBody[Account])
+    .errorOut(statusCode(BadRequest) and jsonBody[String])
     .description("create an account and return it")
-    .serverLogic[IO](input => IO.pure(accountAPI.createAccount(input.name).toRight("error")))
+    .serverLogic[IO](input => IO.pure(accountAPI.createAccount(input.name)))
 
   private val endpoints = List(createAccount)
 
