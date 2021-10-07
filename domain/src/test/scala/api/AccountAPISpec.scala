@@ -10,10 +10,12 @@ import org.scalatest.wordspec.AnyWordSpec
 class AccountAPISpec extends AnyWordSpec with Matchers with OptionValues {
 
   "AccountApi.createAccount" should {
-    "return None if name is incorrect" in {
+    "return None if name is too long or empty" in {
       val myApi = new AccountAPI()
 
       myApi.createAccount("a" * 16) shouldBe None
+      myApi.createAccount("") shouldBe None
+      myApi.createAccount("  ") shouldBe None
       myApi.createAccount("Obiwan") shouldBe Some(Account("Obiwan"))
     }
   }
