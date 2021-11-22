@@ -1,7 +1,8 @@
 package fr.fpe.school
 package api
 
-final class AccountAPI() {
+import model.Account
 
-  def createAccount(name: String): String = name
+class AccountAPI() {
+  def createAccount(name: String): Account = new Account(name)
 }
