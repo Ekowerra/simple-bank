@@ -1,7 +1,11 @@
 package fr.fpe.school
 package api
 
-final class AccountAPI() {
+class AccountAPI {
+  private var accountName = "name"
 
-  def createAccount(name: String): String = name
+  def createAccount(name: String): String = {
+    accountName = name
+    accountName
+  }
 }
