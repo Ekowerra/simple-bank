@@ -5,7 +5,7 @@ import routes.input.CreateAccountInput
 
 import cats.effect.{Concurrent, ContextShift, IO, Timer}
 import cats.syntax.semigroupk._
-import fr.fpe.school.api.AccountAPI
+import fr.fpe.school.api.{AccountAPI, AccountError}
 import fr.fpe.school.model.Account
 import org.http4s.HttpRoutes
 import sttp.model.StatusCode.Created
@@ -29,7 +29,7 @@ final class BankRoutes(accountAPI: AccountAPI)(implicit
     .in("accounts")
     .post
     .in(jsonBody[CreateAccountInput])
-    .out(statusCode(Created) and jsonBody[Either[String, Account]])
+    .out(statusCode(Created) and jsonBody[Either[AccountError, Account]])
     .description("create an account and return it")
     .serverLogic[IO](input => IO.pure(accountAPI.createAccount(input.name)).map(Right(_)))
 
