@@ -26,9 +26,7 @@ object AppServer extends IOApp {
   private def buildBankRoutes() = {
 
     val accountAPI = new AccountAPI()
-
     val bankRoutes = new BankRoutes(accountAPI)
-
     bankRoutes.routes
 
   }
