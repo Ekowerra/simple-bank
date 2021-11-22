@@ -1,7 +1,7 @@
 package fr.fpe.school
 package routes
 
-import api.AccountAPI
+import api.{Account, AccountAPI}
 import routes.input.CreateAccountInput
 
 import cats.effect.{Concurrent, ContextShift, IO, Timer}
@@ -9,7 +9,9 @@ import cats.syntax.semigroupk._
 import org.http4s.HttpRoutes
 import sttp.model.StatusCode.Created
 import sttp.tapir.Tapir
+import io.circe.generic.auto._
 import sttp.tapir.docs.openapi.OpenAPIDocsInterpreter
+import sttp.tapir.generic.auto.schemaForCaseClass
 import sttp.tapir.json.circe.TapirJsonCirce
 import sttp.tapir.openapi.circe.yaml._
 import sttp.tapir.server.http4s.Http4sServerInterpreter
@@ -26,7 +28,7 @@ final class BankRoutes(accountAPI: AccountAPI)(implicit
     .in("accounts")
     .post
     .in(jsonBody[CreateAccountInput])
-    .out(statusCode(Created) and jsonBody[String])
+    .out(statusCode(Created) and jsonBody[Account])
     .description("create an account and return it")
     .serverLogic[IO](input => IO.pure(accountAPI.createAccount(input.name)).map(Right(_)))
 
