@@ -17,5 +17,9 @@ class AccountAPISpec extends AnyWordSpec with Matchers with OptionValues {
       val myApi = new AccountAPI()
       myApi.createAccount("çoikçiujyhtgrfyuiooiuytg") shouldBe None
     }
+    "passing no name" in {
+      val myApi = new AccountAPI()
+      myApi.createAccount("") shouldBe None
+    }
   }
 }
