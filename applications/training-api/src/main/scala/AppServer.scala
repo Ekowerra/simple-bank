@@ -1,5 +1,6 @@
 package fr.fpe.school
 
+import api.AccountAPI
 import config.Config
 import routes.BankRoutes
 
@@ -24,7 +25,7 @@ object AppServer extends IOApp {
 
   private def buildBankRoutes() = {
 
-    val bankRoutes = new BankRoutes()
+    val bankRoutes = new BankRoutes(new AccountAPI)
 
     bankRoutes.routes
 
