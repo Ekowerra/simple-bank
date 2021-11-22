@@ -5,6 +5,7 @@ import routes.input.CreateAccountInput
 
 import cats.effect.{Concurrent, ContextShift, IO, Timer}
 import cats.syntax.semigroupk._
+import fr.fpe.school.api.AccountAPI
 import org.http4s.HttpRoutes
 import sttp.model.StatusCode.Created
 import sttp.tapir.Tapir
@@ -27,7 +28,7 @@ final class BankRoutes()(implicit
     .in(jsonBody[CreateAccountInput])
     .out(statusCode(Created) and jsonBody[String])
     .description("create an account and return it")
-    .serverLogic[IO](input => IO.pure(input.name).map(Right(_)))
+    .serverLogic[IO](input => IO.pure(new AccountAPI().createAccount(input.name)).map(Right(_)))
 
   private val endpoints = List(createAccount)
 
