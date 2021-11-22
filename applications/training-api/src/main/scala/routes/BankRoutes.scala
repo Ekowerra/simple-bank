@@ -22,13 +22,14 @@ final class BankRoutes()(implicit
 ) extends Tapir
     with TapirJsonCirce {
 
+  val AP = new AccountAPI()
   private val createAccount = endpoint
     .in("accounts")
     .post
     .in(jsonBody[CreateAccountInput])
     .out(statusCode(Created) and jsonBody[String])
     .description("create an account and return it")
-    .serverLogic[IO](input => IO.pure(new AccountAPI().createAccount(input.name)).map(Right(_)))
+    .serverLogic[IO](input => IO.pure(AP.createAccount(input.name)).map(Right(_)))
 
   private val endpoints = List(createAccount)
 
