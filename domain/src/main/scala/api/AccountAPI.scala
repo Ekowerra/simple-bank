@@ -1,7 +1,11 @@
 package fr.fpe.school
 package api
 
-final class AccountAPI() {
+case class Account(name: String)
 
-  def createAccount(name: String): String = name
+final class AccountAPI() {
+  def createAccount(name: String): Account = {
+    Account(name)
+  }
+
 }
