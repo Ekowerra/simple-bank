@@ -13,8 +13,8 @@ class AccountAPISpec extends AnyWordSpec with Matchers with OptionValues {
     "return None if name is incorrect" in {
       val myApi = new AccountAPI()
 
-      myApi.createAccount("a" * 16) shouldBe ???
-      myApi.createAccount("Obiwan") shouldBe ???
+      myApi.createAccount("a" * 16) shouldBe None
+      myApi.createAccount("Obiwan") shouldBe Some(Account("Obiwan"))
     }
   }
 }
