@@ -1,11 +1,10 @@
 package fr.fpe.school
 package api
 
-class AccountAPI {
-  private var accountName = "name"
+import model.Account
 
-  def createAccount(name: String): String = {
-    accountName = name
-    accountName
+class AccountAPI {
+  def createAccount(name: String): Account = {
+    new Account(name)
   }
 }
