@@ -4,6 +4,7 @@ import config.Config
 import routes.BankRoutes
 
 import cats.effect.{Blocker, ExitCode, IO, IOApp}
+import fr.fpe.school.api.AccountAPI
 import fs2.Stream
 import org.http4s.blaze.server.BlazeServerBuilder
 import org.http4s.implicits._
@@ -25,6 +26,7 @@ object AppServer extends IOApp {
   private def buildBankRoutes() = {
 
     val bankRoutes = new BankRoutes()
+    val AccountAPI = new AccountAPI()
 
     bankRoutes.routes
 
