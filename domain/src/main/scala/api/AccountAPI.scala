@@ -5,5 +5,10 @@ import model.Account
 
 final class AccountAPI() {
 
-  def createAccount(name: String): Account = Account(name)
+  def createAccount(name: String): Option[Account] = {
+    if (name.length > 15) {
+      return None
+    }
+    Some(Account(name))
+  }
 }
