@@ -7,4 +7,5 @@ final class AccountAPI() {
 
   def createAccount(name: String): Option[Account] =
     Some(Account(name)).filter(_.name.length <= 15)
+      .filterNot(_.name.isBlank)
 }
