@@ -5,5 +5,7 @@ import model.Account
 
 final class AccountAPI() {
 
-  def createAccount(name: String): Account = Account(name)
+  def createAccount(name: String): Account = {
+    Account(name)
+  }
 }
