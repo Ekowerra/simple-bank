@@ -28,7 +28,6 @@ object AppServer extends IOApp {
     val accountAPI = new AccountAPI()
     val bankRoutes = new BankRoutes(accountAPI)
 
-
     bankRoutes.routes
 
   }
