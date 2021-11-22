@@ -15,7 +15,7 @@ import sttp.tapir.openapi.circe.yaml._
 import sttp.tapir.server.http4s.Http4sServerInterpreter
 import sttp.tapir.swagger.http4s.SwaggerHttp4s
 
-final class BankRoutes()(implicit
+final class BankRoutes(accountApi: AccountAPI)(implicit
     concurrent: Concurrent[IO],
     cs: ContextShift[IO],
     timer: Timer[IO]
@@ -28,7 +28,7 @@ final class BankRoutes()(implicit
     .in(jsonBody[CreateAccountInput])
     .out(statusCode(Created) and jsonBody[String])
     .description("create an account and return it")
-    .serverLogic[IO](input => IO.pure(new AccountAPI().createAccount(input.name)).map(Right(_)))
+    .serverLogic[IO](input => IO.pure(accountApi.createAccount(input.name)).map(Right(_)))
 
   private val endpoints = List(createAccount)
 
