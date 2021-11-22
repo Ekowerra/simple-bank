@@ -15,14 +15,13 @@ import sttp.tapir.openapi.circe.yaml._
 import sttp.tapir.server.http4s.Http4sServerInterpreter
 import sttp.tapir.swagger.http4s.SwaggerHttp4s
 
-final class BankRoutes()(implicit
+final class BankRoutes(AP: AccountAPI)(implicit
     concurrent: Concurrent[IO],
     cs: ContextShift[IO],
     timer: Timer[IO]
 ) extends Tapir
     with TapirJsonCirce {
 
-  val AP = new AccountAPI()
   private val createAccount = endpoint
     .in("accounts")
     .post
