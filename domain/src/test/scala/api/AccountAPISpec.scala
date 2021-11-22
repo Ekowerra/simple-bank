@@ -1,7 +1,8 @@
 package fr.fpe.school
 package api
 
-import fr.fpe.school.model.Account
+import model.Account
+
 import org.scalatest.OptionValues
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -9,9 +10,9 @@ import org.scalatest.wordspec.AnyWordSpec
 class AccountAPISpec extends AnyWordSpec with Matchers with OptionValues {
 
   "AccountApi.createAccount" should {
-    "return the name" in {
+    "return an Account" in {
       val myApi = new AccountAPI()
-      myApi.createAccount("Obiwan") shouldBe new Account("Obiwan")
+      myApi.createAccount("Obiwan") shouldBe Account("Obiwan")
     }
   }
 }
