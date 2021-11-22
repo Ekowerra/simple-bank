@@ -10,7 +10,7 @@ class AccountAPISpec extends AnyWordSpec with Matchers with OptionValues {
   "AccountApi.createAccount" should {
     "return an Account" in {
       val myApi = new AccountAPI()
-      myApi.createAccount("Obiwan") shouldBe ???
+      myApi.createAccount("NicoTBo") shouldBe Account("NicoTBo")
     }
   }
 }
