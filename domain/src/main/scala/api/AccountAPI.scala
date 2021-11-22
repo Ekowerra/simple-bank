@@ -5,6 +5,5 @@ import model.Account
 
 final class AccountAPI() {
 
-  def createAccount(name: String): Option[Account] =
-    Some(Account(name)).filter(_.name.length <= 15)
+  def createAccount(name: String): Option[Account] = Some(Account(name)).filter(_.name.length <= 15).filter(!_.name.isBlank)
 }
