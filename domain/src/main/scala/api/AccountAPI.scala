@@ -6,7 +6,9 @@ import model.Account
 final class AccountAPI() {
 
   def createAccount(name: String): Either[String, Account] = {
-    Either.cond[String, Account](name.length < 15 && name.trim.nonEmpty, right = Account(name), left = "Error name")
+    for {
+      _ <- Either.cond((name.length < 15), left = "Name to long", right = ())
+      _ <- Either.cond((name.trim.nonEmpty), left = "Name is blank", right = ())
+    } yield(Account(name))
   }
-
 }
