@@ -1,18 +1,19 @@
 package fr.fpe.school
 package api
 
+import api.error.CreateAccountError
 import model.Account
 
 final class AccountAPI() {
 
-  def createAccount(name: String): Either[String, Account] =
+  def createAccount(name: String): Either[CreateAccountError, Account] =
     validateName(name).map(Account(_))
 
-  private def validateName(name: String): Either[String, String] = {
+  private def validateName(name: String): Either[CreateAccountError, String] = {
     val trimmedName = name.trim
     for {
-      _ <- Either.cond(trimmedName.nonEmpty, (), "name is empty")
-      _ <- Either.cond(trimmedName.length <= 15, (), "name is too long")
+      _ <- Either.cond(trimmedName.nonEmpty, (), ???)
+      _ <- Either.cond(trimmedName.length <= 15, (), ???)
     } yield trimmedName
   }
 }
