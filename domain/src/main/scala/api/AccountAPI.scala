@@ -12,8 +12,8 @@ final class AccountAPI() {
   private def validateName(name: String): Either[CreateAccountError, String] = {
     val trimmedName = name.trim
     for {
-      _ <- Either.cond(trimmedName.nonEmpty, (), ???)
-      _ <- Either.cond(trimmedName.length <= 15, (), ???)
+      _ <- Either.cond(trimmedName.nonEmpty, (), CreateAccountError.EmptyNameError)
+      _ <- Either.cond(trimmedName.length <= 15, (), CreateAccountError.NameTooLongError(trimmedName))
     } yield trimmedName
   }
 }
