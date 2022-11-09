@@ -6,7 +6,8 @@ import database.AccountRepository
 import model.Account
 
 final class AccountAPI(accountRepository: AccountRepository) {
-  def createAccount(name: String): Either[CreateAccountError, Account] = ???
+  def createAccount(name: String): Either[CreateAccountError, Account] =
+    validateName(name).map(accountRepository.insert)
 
   private def validateName(name: String): Either[CreateAccountError, String] = {
     val trimmedName = name.trim
