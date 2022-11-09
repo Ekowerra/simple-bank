@@ -6,6 +6,7 @@ import database.AccountRepository
 import model.Account
 
 import cats.effect.IO
+import cats.effect.unsafe.implicits.global
 import org.mockito.scalatest.IdiomaticMockito
 import org.scalatest.OptionValues
 import org.scalatest.matchers.should.Matchers
