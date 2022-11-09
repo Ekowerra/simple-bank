@@ -8,10 +8,12 @@ import model.Account
 import cats.effect.IO
 import cats.syntax.traverse._
 import cats.syntax.either._
-import cats.syntax.functor._
 
 final class AccountAPI(accountRepository: AccountRepository) {
-  def createAccount(name: String): IO[Either[CreateAccountError, Account]] = ???
+  def createAccount(name: String): IO[Either[CreateAccountError, Account]] =
+    validateName(name).flatTraverse(
+      accountRepository.insert(_).map(_.leftMap[CreateAccountError](CreateAccountError.InvalidDatabaseRequestError))
+    )
 
   private def validateName(name: String): Either[CreateAccountError, String] = {
     val trimmedName = name.trim

@@ -27,10 +27,11 @@ class AccountAPISpec extends AnyWordSpec with Matchers with OptionValues with Id
       val fakeId                     = UUID.randomUUID()
       val now                        = OffsetDateTime.now()
       def buildAccount(name: String) = Account(fakeId, name, now)
-      accountRepository.insert(*) answers ((name: String) => Right(buildAccount(name)))
+      accountRepository.insert(*) answers ((name: String) => IO.pure(Right(buildAccount(name))))
+
       val keyAlreadyUsed = "unique"
       val databaseError  = AccountRepositoryError.UniqueKeyAlreadyUsedError(keyAlreadyUsed)
-      accountRepository.insert(keyAlreadyUsed) returns Left(databaseError)
+      accountRepository.insert(keyAlreadyUsed) returns IO.pure(Left(databaseError))
 
       myApi.createAccount("a" * 16).unsafeRunSync() shouldBe Left(CreateAccountError.NameTooLongError("a" * 16))
       myApi.createAccount("").unsafeRunSync() shouldBe Left(CreateAccountError.EmptyNameError)

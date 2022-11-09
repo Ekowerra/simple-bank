@@ -29,9 +29,9 @@ final class BankRoutes(accountAPI: AccountAPI)(implicit
     .out(statusCode(Created) and jsonBody[Account])
     .errorOut(
       oneOf[CreateAccountError](
-        oneOfMapping(BadRequest, jsonBody[CreateAccountError.NameTooLongError]),
-        oneOfMapping(BadRequest, jsonBody[CreateAccountError.EmptyNameError.type]),
-        oneOfMapping(Forbidden, jsonBody[CreateAccountError.InvalidDatabaseRequestError])
+        oneOfVariant(BadRequest, jsonBody[CreateAccountError.NameTooLongError]),
+        oneOfVariant(BadRequest, jsonBody[CreateAccountError.EmptyNameError.type]),
+        oneOfVariant(Forbidden, jsonBody[CreateAccountError.InvalidDatabaseRequestError])
       )
     )
     .description("create an account and return it")
