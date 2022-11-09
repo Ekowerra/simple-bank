@@ -3,8 +3,8 @@ package database
 
 import model.Account
 
-import java.util.UUID
+import cats.effect.IO
 
 trait AccountRepository {
-  def insert(name: String): Account
+  def insert(name: String): IO[Account]
 }

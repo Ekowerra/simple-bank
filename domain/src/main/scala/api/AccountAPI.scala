@@ -5,9 +5,10 @@ import api.error.CreateAccountError
 import database.AccountRepository
 import model.Account
 
+import cats.effect.IO
+
 final class AccountAPI(accountRepository: AccountRepository) {
-  def createAccount(name: String): Either[CreateAccountError, Account] =
-    validateName(name).map(accountRepository.insert)
+  def createAccount(name: String): IO[Either[CreateAccountError, Account]] = ???
 
   private def validateName(name: String): Either[CreateAccountError, String] = {
     val trimmedName = name.trim
