@@ -1,0 +1,5 @@
+# JVM params
+-J-Xss4M
+-J-Xms2g
+-J-Xmx4g
+-J-XX:MaxMetaspaceSize=768m
