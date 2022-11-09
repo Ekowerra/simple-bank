@@ -2,12 +2,11 @@ package fr.fpe.school
 package api
 
 import api.error.CreateAccountError
+import database.AccountRepository
 import model.Account
 
-final class AccountAPI() {
-
-  def createAccount(name: String): Either[CreateAccountError, Account] =
-    validateName(name).map(Account(_))
+final class AccountAPI(accountRepository: AccountRepository) {
+  def createAccount(name: String): Either[CreateAccountError, Account] = ???
 
   private def validateName(name: String): Either[CreateAccountError, String] = {
     val trimmedName = name.trim

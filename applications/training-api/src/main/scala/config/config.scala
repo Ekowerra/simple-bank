@@ -9,7 +9,9 @@ import pureconfig.module.catseffect.syntax._
 package object config {
   final case class ServerConfig(host: String, port: Int)
 
-  final case class Config(server: ServerConfig)
+  final case class DatabaseConfig(driver: String, url: String, user: String, password: String, threadPoolSize: Int)
+
+  final case class Config(server: ServerConfig, database: DatabaseConfig)
 
   object Config {
     def load(): Resource[IO, Config] =

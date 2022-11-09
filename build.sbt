@@ -22,9 +22,18 @@ lazy val domain = (project in file("domain"))
     libraryDependencies ++= Dependencies.scalaTest.map(_ % Test)
   )
 
+lazy val `database-h2` = (project in file("infrastructure/database-h2"))
+  .dependsOn(domain)
+  .settings(
+    libraryDependencies += Dependencies.h2,
+    libraryDependencies += Dependencies.flyway,
+    libraryDependencies ++= Dependencies.doobie
+  )
+
 lazy val `training-api` = (project in file("applications/training-api"))
   .dependsOn(
-    domain % "test->test;compile->compile"
+    domain % "test->test;compile->compile",
+    `database-h2`
   )
   .settings(
     libraryDependencies ++= Dependencies.tapir,
