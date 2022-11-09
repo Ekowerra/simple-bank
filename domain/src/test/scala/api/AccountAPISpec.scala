@@ -3,6 +3,7 @@ package api
 
 import api.error.CreateAccountError
 import database.AccountRepository
+import database.error.AccountRepositoryError
 import model.Account
 
 import cats.effect.IO
@@ -18,7 +19,7 @@ import java.util.UUID
 class AccountAPISpec extends AnyWordSpec with Matchers with OptionValues with IdiomaticMockito {
 
   "AccountApi.createAccount" should {
-    "return a Left[CreateAccountError] if name is too long or empty" in {
+    "return a InvalidDatabaseRequestError if name is already used" in {
       val accountRepository: AccountRepository = mock[AccountRepository]
       val myApi                                = new AccountAPI(accountRepository)
 
@@ -26,13 +27,20 @@ class AccountAPISpec extends AnyWordSpec with Matchers with OptionValues with Id
       val fakeId                     = UUID.randomUUID()
       val now                        = OffsetDateTime.now()
       def buildAccount(name: String) = Account(fakeId, name, now)
-      accountRepository.insert(*) answers ((name: String) => IO.pure(buildAccount(name)))
+      accountRepository.insert(*) answers ((name: String) => Right(buildAccount(name)))
+      val keyAlreadyUsed = "unique"
+      val databaseError  = AccountRepositoryError.UniqueKeyAlreadyUsedError(keyAlreadyUsed)
+      accountRepository.insert(keyAlreadyUsed) returns Left(databaseError)
 
       myApi.createAccount("a" * 16).unsafeRunSync() shouldBe Left(CreateAccountError.NameTooLongError("a" * 16))
       myApi.createAccount("").unsafeRunSync() shouldBe Left(CreateAccountError.EmptyNameError)
       myApi.createAccount("  ").unsafeRunSync() shouldBe Left(CreateAccountError.EmptyNameError)
+
+      myApi.createAccount(keyAlreadyUsed) shouldBe Left(
+        CreateAccountError.InvalidDatabaseRequestError(databaseError)
+      )
       myApi.createAccount("Obiwan").unsafeRunSync() shouldBe Right(buildAccount("Obiwan"))
-      accountRepository.insert(*) was called
+      accountRepository.insert(*) wasCalled twice
     }
   }
 }
