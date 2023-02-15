@@ -1,6 +1,7 @@
 package fr.fpe.school
 package routes
 
+import api.AccountAPI
 import routes.input.CreateAccountInput
 
 import cats.effect.IO
@@ -14,7 +15,7 @@ import sttp.tapir.server.ServerEndpoint
 import sttp.tapir.server.http4s.Http4sServerInterpreter
 import sttp.tapir.swagger.bundle.SwaggerInterpreter
 
-final class BankRoutes() extends Tapir with TapirJsonCirce {
+final class BankRoutes(accountAPI: AccountAPI) extends Tapir with TapirJsonCirce {
 
   private val createAccount = endpoint
     .in("accounts")
@@ -22,7 +23,7 @@ final class BankRoutes() extends Tapir with TapirJsonCirce {
     .in(jsonBody[CreateAccountInput])
     .out(statusCode(Created) and jsonBody[String])
     .description("create an account and return it")
-    .serverLogic[IO](input => ???)
+    .serverLogic[IO](input => IO.pure(Right(accountAPI.createAccount(input.name))))
 
   private val apiEndpoints: List[ServerEndpoint[Any, IO]] = List(createAccount)
 
